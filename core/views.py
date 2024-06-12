@@ -1,10 +1,10 @@
 from django.shortcuts import render
 
 def register(request):
-    return render(request, 'templates/register.html')
+    return render(request, 'register.html')
 
 def create_task(request):
-    return render(request, 'core/create_task.html')
+    return render(request, 'create_task.html')
 
 def task_list(request):
-    return render(request, 'core/task_list.html')
+    return render(request, 'task_list.html') 
