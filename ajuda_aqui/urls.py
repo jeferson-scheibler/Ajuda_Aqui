@@ -19,7 +19,9 @@ from django.urls import path
 from core import views  # Importando views do diretório core
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('register/', views.register, name='register'),
     path('create_task/', views.create_task, name='create_task'),
     path('task_list/', views.task_list, name='task_list'),
 ]
+

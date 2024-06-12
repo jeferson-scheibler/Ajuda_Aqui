@@ -4,3 +4,7 @@ git push                                : Enviar as mudanças para o repositóri
 
 python -m venv env
 .\env\Scripts\activate
+
+deativate
+
+pip install psycopg2-binary
