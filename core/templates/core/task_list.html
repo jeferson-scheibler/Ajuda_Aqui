@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Lista de Tarefas - AjudaAqui{% endblock %}
+
+{% block content %}
+<section class="max-w-lg mx-auto">
+    <h2 class="text-3xl font-bold mb-4">Lista de Tarefas</h2>
+    <ul class="divide-y divide-gray-300">
+        <!-- Loop through tasks and display them -->
+        {% for task in tasks %}
+        <li class="py-4">
+            <h3 class="text-xl font-semibold">{{ task.title }}</h3>
+            <p class="text-gray-600">{{ task.description }}</p>
+            <!-- Adicione mais detalhes da tarefa conforme necessário -->
+        </li>
+        {% empty %}
+        <li class="py-4 text-gray-600">Nenhuma tarefa encontrada.</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

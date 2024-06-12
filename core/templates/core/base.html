@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AjudaAqui{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <header class="bg-blue-500 py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-white text-2xl font-bold">AjudaAqui</h1>
+            <nav>
+                <ul class="flex space-x-4 text-white">
+                    <li><a href="#" class="hover:text-gray-200">Home</a></li>
+                    <li><a href="#" class="hover:text-gray-200">Sobre</a></li>
+                    <!-- Adicione mais links conforme necessário -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="container mx-auto mt-4">
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer class="bg-blue-500 py-4 mt-4 text-white text-center">
+        <p>&copy; {% now "Y" %} AjudaAqui</p>
+    </footer>
+</body>
+</html>
