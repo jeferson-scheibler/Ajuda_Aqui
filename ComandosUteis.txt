@@ -1,0 +1,22 @@
+git add .                               : Adicionar arquivos ao stage.
+git commit -m "Mensagem do commit"      : Confirmar as mudanças.
+git push                                : Enviar as mudanças para o repositório remoto.
+
+criar o venv:
+python -m venv env
+.\venv\Scripts\activate
+(caso de errado o comando a cima)
+Get-ExecutionPolicy
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+.\venv\Scripts\activate
+
+
+deativate
+
+pip install psycopg2-binary
+
+para incluir tabelas no banco de dados
+    colocar no models.py, após no terminal dar os comandos
+    py manage.py makemigrations e depois py manage.py migrate
+    que a tabela será incluída no banco
+    
