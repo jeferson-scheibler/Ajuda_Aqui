@@ -1,12 +1,11 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate, logout
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .forms import RegisterForm, TaskForm
 from .models import Task
-from django.contrib import messages
-
 
 def register(request):
     if request.method == 'POST':
@@ -41,6 +40,7 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
+@login_required
 def create_task(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
@@ -48,10 +48,8 @@ def create_task(request):
             task = form.save(commit=False)
             task.user = request.user  # Associar a tarefa ao usuário logado
             task.save()
-            print(f"Tarefa criada com sucesso: {task}")  # Debug para verificar se a tarefa foi criada
-            return redirect('task_list')  # Redirecionar para a lista de tarefas após criar a tarefa
-        else:
-            print(f"Erros no formulário: {form.errors}")  # Debug para verificar erros no formulário
+            messages.success(request, 'Tarefa criada com sucesso!')
+            return redirect('task_list')
     else:
         form = TaskForm()
     
@@ -60,5 +58,33 @@ def create_task(request):
 @login_required
 def task_list(request):
     tasks = Task.objects.filter(user=request.user)
-    print(tasks)  # Debugging: imprime as tarefas no console do servidor
     return render(request, 'task_list.html', {'tasks': tasks})
+
+@login_required
+def edit_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id, user=request.user)
+    
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Tarefa atualizada com sucesso!')
+            return redirect('task_list')
+    else:
+        form = TaskForm(instance=task)
+    
+    return render(request, 'task_list.html', {'tasks': Task.objects.filter(user=request.user), 'form': form, 'task_id': task_id})
+
+@login_required
+def update_task(request):
+    if request.method == 'POST' and request.is_ajax():
+        task_id = request.POST.get('task_id')
+        task = get_object_or_404(Task, id=task_id, user=request.user)
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'error': form.errors}, status=400)
+    else:
+        return JsonResponse({'error': 'Método não permitido'}, status=405)

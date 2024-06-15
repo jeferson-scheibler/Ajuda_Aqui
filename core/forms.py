@@ -22,4 +22,10 @@ class RegisterForm(UserCreationForm):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ('task_name', 'task_description')
+        fields = ('task_name', 'task_description', 'priority')
+
+    def clean_priority(self):
+        priority = self.cleaned_data['priority']
+        if not priority:
+            raise forms.ValidationError("Este campo é obrigatório.")
+        return priority

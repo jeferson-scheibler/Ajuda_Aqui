@@ -7,13 +7,22 @@
     <h2 class="text-3xl font-bold mb-4">Criar Nova Tarefa</h2>
     <form method="post" class="space-y-4">
         {% csrf_token %}
+        
         <div>
-            <label for="task_name" class="block text-sm font-medium text-gray-700">Nome da Tarefa</label>
-            <input type="text" name="task_name" id="task_name" class="mt-1 p-2 border border-gray-300 rounded-md w-full">
+            <label for="id_task_name" class="block text-sm font-medium text-gray-700">Nome da Tarefa</label>
+            <input type="text" name="task_name" id="id_task_name" class="mt-1 p-2 border border-gray-300 rounded-md w-full">
         </div>
         <div>
-            <label for="task_description" class="block text-sm font-medium text-gray-700">Descrição da Tarefa</label>
-            <textarea name="task_description" id="task_description" class="mt-1 p-2 border border-gray-300 rounded-md w-full"></textarea>
+            <label for="id_task_description" class="block text-sm font-medium text-gray-700">Descrição da Tarefa</label>
+            <textarea name="task_description" id="id_task_description" class="mt-1 p-2 border border-gray-300 rounded-md w-full"></textarea>
+        </div>
+        <div>
+            <label for="id_priority" class="block text-sm font-medium text-gray-700">Prioridade</label>
+            <select name="priority" id="id_priority" class="mt-1 p-2 border border-gray-300 rounded-md w-full">
+                <option value="1">Baixa</option>
+                <option value="2">Média</option>
+                <option value="3">Alta</option>
+            </select>
         </div>
 
         <div>
