@@ -21,7 +21,9 @@ from core import views  # Importando views do diretório core
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', views.register, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
     path('create_task/', views.create_task, name='create_task'),
-    path('task_list/', views.task_list, name='task_list'),
+    path('task-list/', views.task_list, name='task_list'),
 ]
 

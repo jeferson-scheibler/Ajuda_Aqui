@@ -2,28 +2,24 @@
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser  # Se estiver usando um modelo personalizado
-from django.contrib.auth.models import User
+from .models import CustomUser, Task
 
-class SignUpForm(UserCreationForm):
+class RegisterForm(UserCreationForm):
+    password1 = forms.CharField(widget=forms.PasswordInput)
+    password2 = forms.CharField(widget=forms.PasswordInput, label="Confirmar Senha")
+
     class Meta:
-        model = CustomUser  # Substitua por CustomUser se estiver usando um modelo personalizado
+        model = CustomUser
         fields = ('username', 'email', 'password1', 'password2')
 
-class RegisterForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
-    password_confirm = forms.CharField(widget=forms.PasswordInput, label="Confirmar Senha")
-
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'password']
-
-    def clean(self):
-        cleaned_data = super().clean()
-        password = cleaned_data.get('password')
-        password_confirm = cleaned_data.get('password_confirm')
-
-        if password and password_confirm and password != password_confirm:
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
             raise forms.ValidationError("As senhas não coincidem.")
-
-        return cleaned_data
+        return password2
+        
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ('task_name', 'task_description')

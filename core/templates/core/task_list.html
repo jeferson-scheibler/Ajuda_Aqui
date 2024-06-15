@@ -9,13 +9,13 @@
         <!-- Loop through tasks and display them -->
         {% for task in tasks %}
         <li class="py-4">
-            <h3 class="text-xl font-semibold">{{ task.title }}</h3>
+            <h3 class="text-xl font-semibold">{{ task.name }}</h3>
             <p class="text-gray-600">{{ task.description }}</p>
-            <!-- Adicione mais detalhes da tarefa conforme necessário -->
         </li>
         {% empty %}
         <li class="py-4 text-gray-600">Nenhuma tarefa encontrada.</li>
         {% endfor %}
     </ul>
+    <a href="{% url 'create_task' %}" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 mt-4 inline-block">Adicionar Nova Tarefa</a>
 </section>
 {% endblock %}
