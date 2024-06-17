@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import RegisterForm, TaskForm
 from .models import Task
+from django.views.decorators.http import require_POST
 
 def register(request):
     if request.method == 'POST':
@@ -63,23 +64,7 @@ def task_list(request):
 @login_required
 def edit_task(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
-    
     if request.method == 'POST':
-        form = TaskForm(request.POST, instance=task)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Tarefa atualizada com sucesso!')
-            return redirect('task_list')
-    else:
-        form = TaskForm(instance=task)
-    
-    return render(request, 'task_list.html', {'tasks': Task.objects.filter(user=request.user), 'form': form, 'task_id': task_id})
-
-@login_required
-def update_task(request):
-    if request.method == 'POST' and request.is_ajax():
-        task_id = request.POST.get('task_id')
-        task = get_object_or_404(Task, id=task_id, user=request.user)
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
             form.save()
@@ -87,4 +72,42 @@ def update_task(request):
         else:
             return JsonResponse({'error': form.errors}, status=400)
     else:
-        return JsonResponse({'error': 'Método não permitido'}, status=405)
+        form = TaskForm(instance=task)
+    
+    context = {
+        'form': form,
+        'task': task,
+    }
+    return render(request, 'edit_task_form.html', context)
+
+@login_required
+@require_POST
+def update_task(request):
+    task_id = request.POST.get('task_id')
+    
+    if not task_id:
+        return JsonResponse({'error': 'ID da tarefa não fornecido'}, status=400)
+    
+    task = get_object_or_404(Task, id=task_id, user=request.user)
+    form = TaskForm(request.POST, instance=task)
+    
+    if form.is_valid():
+        form.save()
+        return JsonResponse({'success': True})
+    else:
+        errors = form.errors.as_json()
+        return JsonResponse({'error': errors}, status=400)
+    
+@login_required
+def fetch_task_data(request):
+    task_id = request.GET.get('task_id')
+    task = get_object_or_404(Task, id=task_id, user=request.user)
+
+    data = {
+        'task_name': task.task_name,
+        'task_description': task.task_description,
+        'priority': task.priority,
+        # Adicione outros campos conforme necessário
+    }
+
+    return JsonResponse(data)

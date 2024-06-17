@@ -1,0 +1,1 @@
+<><script src="https://unpkg.com/htmx.org@1.8.2" integrity="sha384-+8ISc/waZcRdXCLxVgbsLzay31nCdyZXQxnsUy++HJzJliTzxKWr0m1cIEMyUzQu" crossorigin="anonymous"></script><script src="{% static 'js/dialog.js' %}"></script></>

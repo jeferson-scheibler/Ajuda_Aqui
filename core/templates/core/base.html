@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}AjudaAqui{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
 </head>
 <body class="bg-gray-100">
     <header class="bg-blue-500 py-4">
@@ -14,7 +16,6 @@
                 <ul class="flex space-x-4 text-white">
                     <li><a href="#" class="hover:text-gray-200">Home</a></li>
                     <li><a href="#" class="hover:text-gray-200">Sobre</a></li>
-                    <!-- Adicione mais links conforme necessário -->
                 </ul>
             </nav>
         </div>
@@ -22,12 +23,13 @@
     <main class="container mx-auto mt-4">
         {% block content %}
         {% endblock %}
-        {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}" class="text-gray-700 hover:underline">Logout</a>
-        {% endif %}
     </main>
     <footer class="bg-blue-500 py-4 mt-4 text-white text-center">
         <p>&copy; {% now "Y" %} AjudaAqui</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org/dist/htmx.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    {% block javascript %}{% endblock %}
 </body>
 </html>

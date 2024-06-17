@@ -23,9 +23,20 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ('task_name', 'task_description', 'priority')
+        widgets = {
+            'task_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome da Tarefa'}),
+            'task_description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Descrição da Tarefa'}),
+            'priority': forms.Select(attrs={'class': 'form-control'}),
+        }
 
     def clean_priority(self):
         priority = self.cleaned_data['priority']
         if not priority:
             raise forms.ValidationError("Este campo é obrigatório.")
         return priority
+
+    def clean_task_name(self):
+        task_name = self.cleaned_data['task_name']
+        if len(task_name) < 5:
+            raise forms.ValidationError("O nome da tarefa deve ter pelo menos 5 caracteres.")
+        return task_name

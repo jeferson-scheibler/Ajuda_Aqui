@@ -27,5 +27,6 @@ urlpatterns = [
     path('task-list/', views.task_list, name='task_list'),
     path('edit_task/<int:task_id>/', views.edit_task, name='edit_task'),
     path('update_task/', views.update_task, name='update_task'),
+    path('fetch_task_data/', views.fetch_task_data, name='fetch_task_data'),
 ]
 

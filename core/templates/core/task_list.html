@@ -5,66 +5,104 @@
 <section class="max-w-lg mx-auto">
     <h2 class="text-3xl font-bold mb-4">Lista de Tarefas</h2>
     <ul class="divide-y divide-gray-300">
-        <!-- Loop through tasks and display them -->
         {% for task in tasks %}
         <li class="py-4">
             <h3 class="text-xl font-semibold">{{ task.task_name }}</h3>
             <p class="text-gray-600">{{ task.task_description }}</p>
-            <!-- Botão para abrir modal -->
-            <button class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 mt-2 edit-task-btn" data-task-id="{{ task.id }}">Editar</button>
+            <!-- Botão para abrir modal de edição -->
+            <button type="button" class="btn btn-primary edit-task-btn"
+                    data-toggle="modal" data-target="#editTaskModal"
+                    data-task-id="{{ task.id }}">Editar
+            </button>
         </li>
         {% empty %}
         <li class="py-4 text-gray-600">Nenhuma tarefa encontrada.</li>
         {% endfor %}
     </ul>
-    <a href="{% url 'create_task' %}" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 mt-4 inline-block">Adicionar Nova Tarefa</a>
+    <a href="{% url 'create_task' %}"
+       class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 mt-4 inline-block">
+        Adicionar Nova Tarefa
+    </a>
 </section>
 
-<!-- Modal de Edição -->
-<div id="editTaskModal" class="modal hidden">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <form id="editTaskForm">
-            <input type="text" name="task_name" value="Editar Tarefa">
-            <button type="submit">Salvar</button>
-        </form>
+<div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editTaskModalLabel">Editar Tarefa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Conteúdo do formulário será carregado via HTMX -->
+                <form id="editTaskForm" hx-post="{% url 'update_task' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="task_id" id="task_id_input">
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
-
 {% endblock %}
 
 {% block javascript %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
-        console.log('Document ready.');
-
-        $('.edit-task-btn').click(function () {
+    $(document).ready(function() {
+        // Exibe o modal ao clicar no botão de edição
+        $('.edit-task-btn').click(function() {
             var taskId = $(this).data('task-id');
-            console.log('Abrindo modal para a tarefa com ID:', taskId);
-
-            // Simulando uma requisição AJAX bem-sucedida
-            var data = '<form id="editTaskForm"><input type="text" name="task_name" value="Editar Tarefa"></form>';
-            $('#editTaskModal').html(data);
-            $('#editTaskModal').removeClass('hidden');
+            $('#task_id_input').val(taskId); // Define o valor do campo hidden
+            fetchTaskData(taskId); // Chama a função para buscar os dados da tarefa
+            $('#editTaskModal').modal('show'); // Exibe o modal
         });
 
-        $('.close').click(function () {
-            console.log('Clicou no botão Fechar.');
-            $('#editTaskModal').addClass('hidden');
-        });
+        // Função para buscar e preencher os dados da tarefa no modal
+        function fetchTaskData(taskId) {
+            $.ajax({
+                url: '{% url 'fetch_task_data' %}',
+                method: 'GET',
+                data: {'task_id': taskId},
+                success: function (data) {
+                    // Preenche os campos do formulário com os dados recebidos
+                    $('#id_task_name').val(data.task_name);  // Substitua 'id_task_name' pelo ID correto do campo
+                    $('#id_task_description').val(data.task_description);  // Substitua 'id_task_description' pelo ID correto do campo
+                    // Atualize outros campos conforme necessário
+                },
+                error: function (error) {
+                    console.error('Erro ao carregar dados da tarefa:', error);
+                }
+            });
+        }
 
-        $(document).on('submit', '#editTaskForm', function (event) {
+        // Submete o formulário de edição via AJAX
+        $(document).on('submit', '#editTaskForm', function(event) {
             event.preventDefault();
             var formData = $(this).serialize();
-            console.log('Enviando dados do formulário:', formData);
-
-            // Simulando uma requisição AJAX bem-sucedida
-            setTimeout(function () {
-                console.log('Simulando sucesso na atualização.');
-                $('#editTaskModal').addClass('hidden');
-                location.reload(); // Simula recarregar a página após salvar
-            }, 1000); // Tempo de simulação de 1 segundo
+            $.ajax({
+                url: $(this).attr('hx-post'),
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                data: formData,
+                success: function(data) {
+                    if (data.success) {
+                        console.log('Tarefa atualizada com sucesso.');
+                        $('#editTaskModal').modal('hide');  // Esconde o modal após sucesso
+                        // Você pode adicionar aqui mais lógica de atualização da interface se necessário
+                    } else {
+                        console.error('Erro ao atualizar tarefa:', data.error);
+                        // Manipule erros de validação ou outros erros conforme necessário
+                    }
+                },
+                error: function(error) {
+                    console.error('Erro ao enviar requisição AJAX:', error);
+                    // Manipule erros de rede ou outros erros conforme necessário
+                }
+            });
         });
     });
 </script>
