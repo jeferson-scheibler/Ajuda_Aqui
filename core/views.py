@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import RegisterForm, TaskForm
 from .models import Task
-from django.views.decorators.http import require_POST
+from django.template.loader import render_to_string
 
 def register(request):
     if request.method == 'POST':
@@ -73,41 +73,58 @@ def edit_task(request, task_id):
             return JsonResponse({'error': form.errors}, status=400)
     else:
         form = TaskForm(instance=task)
+        print("Form fields:", form.fields)
+        print("Task data:", task.task_name, task.task_description, task.priority)
     
     context = {
         'form': form,
         'task': task,
     }
-    return render(request, 'edit_task_form.html', context)
 
 @login_required
-@require_POST
 def update_task(request):
-    task_id = request.POST.get('task_id')
-    
-    if not task_id:
-        return JsonResponse({'error': 'ID da tarefa não fornecido'}, status=400)
-    
-    task = get_object_or_404(Task, id=task_id, user=request.user)
-    form = TaskForm(request.POST, instance=task)
-    
-    if form.is_valid():
-        form.save()
-        return JsonResponse({'success': True})
+    if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        task_id = request.POST.get('task_id')
+        if task_id:
+            task = get_object_or_404(Task, id=task_id, user=request.user)
+            form = TaskForm(request.POST, instance=task)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'error': form.errors}, status=400)
+        else:
+            return JsonResponse({'error': 'ID da tarefa não fornecido'}, status=400)
     else:
-        errors = form.errors.as_json()
-        return JsonResponse({'error': errors}, status=400)
+        return JsonResponse({'error': 'Método não permitido'}, status=405)
     
 @login_required
 def fetch_task_data(request):
     task_id = request.GET.get('task_id')
     task = get_object_or_404(Task, id=task_id, user=request.user)
-
+    form = TaskForm(instance=task)
+    
+    form_html = render_to_string('form_partial.html', {'form': form}, request=request)
+    
     data = {
         'task_name': task.task_name,
         'task_description': task.task_description,
         'priority': task.priority,
-        # Adicione outros campos conforme necessário
+        'form': form_html
     }
 
     return JsonResponse(data)
+
+@login_required
+def delete_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id, user=request.user)
+
+    if request.method == 'POST':
+        task.delete()
+        messages.success(request, 'Tarefa excluída com sucesso!')
+        return redirect('task_list')
+
+    context = {
+        'task': task
+    }
+    return render(request, 'delete_task.html', context)

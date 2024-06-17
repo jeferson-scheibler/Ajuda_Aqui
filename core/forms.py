@@ -3,6 +3,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser, Task
+from django.utils.translation import gettext_lazy as _
 
 class RegisterForm(UserCreationForm):
     password1 = forms.CharField(widget=forms.PasswordInput)
@@ -23,10 +24,15 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ('task_name', 'task_description', 'priority')
+        labels = {
+            'task_name': _('Nome da Tarefa'),
+            'task_description': _('Descrição da Tarefa'),
+            'priority': _('Prioridade'),
+        }
         widgets = {
-            'task_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome da Tarefa'}),
-            'task_description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Descrição da Tarefa'}),
-            'priority': forms.Select(attrs={'class': 'form-control'}),
+            'task_name': forms.TextInput(attrs={'id': 'id_task_name', 'class': 'form-control', 'placeholder': 'Nome da Tarefa'}),
+            'task_description': forms.Textarea(attrs={'id': 'id_task_description', 'class': 'form-control', 'rows': 3, 'placeholder': 'Descrição da Tarefa'}),
+            'priority': forms.Select(attrs={'id': 'id_priority', 'class': 'form-control'}),
         }
 
     def clean_priority(self):

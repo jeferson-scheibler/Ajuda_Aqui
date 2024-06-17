@@ -14,6 +14,10 @@
                     data-toggle="modal" data-target="#editTaskModal"
                     data-task-id="{{ task.id }}">Editar
             </button>
+            <form action="{% url 'delete_task' task.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Excluir Tarefa</button>
+            </form>
         </li>
         {% empty %}
         <li class="py-4 text-gray-600">Nenhuma tarefa encontrada.</li>
@@ -35,11 +39,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Conteúdo do formulário será carregado via HTMX -->
+                <!-- Conteúdo do formulário será carregado via AJAX -->
                 <form id="editTaskForm" hx-post="{% url 'update_task' %}">
                     {% csrf_token %}
                     <input type="hidden" name="task_id" id="task_id_input">
-                    {{ form.as_p }}
+                    <!-- O template form.as_p será carregado via AJAX -->
+                    <div id="form-fields">
+                        <!-- Os campos do formulário serão inseridos aqui via AJAX -->
+                    </div>
                     <button type="submit" class="btn btn-primary">Salvar</button>
                 </form>
             </div>
@@ -51,33 +58,24 @@
 {% block javascript %}
 <script>
     $(document).ready(function() {
-        // Exibe o modal ao clicar no botão de edição
         $('.edit-task-btn').click(function() {
             var taskId = $(this).data('task-id');
-            $('#task_id_input').val(taskId); // Define o valor do campo hidden
-            fetchTaskData(taskId); // Chama a função para buscar os dados da tarefa
-            $('#editTaskModal').modal('show'); // Exibe o modal
-        });
-
-        // Função para buscar e preencher os dados da tarefa no modal
-        function fetchTaskData(taskId) {
             $.ajax({
-                url: '{% url 'fetch_task_data' %}',
+                url: "{% url 'fetch_task_data' %}",
                 method: 'GET',
                 data: {'task_id': taskId},
                 success: function (data) {
-                    // Preenche os campos do formulário com os dados recebidos
-                    $('#id_task_name').val(data.task_name);  // Substitua 'id_task_name' pelo ID correto do campo
-                    $('#id_task_description').val(data.task_description);  // Substitua 'id_task_description' pelo ID correto do campo
-                    // Atualize outros campos conforme necessário
+                    $('#task_id_input').val(taskId);
+                    $('#form-fields').html(data.form);  // Inserir campos do formulário
+                    $('#editTaskModal').modal('show');  // Exibe o modal após preencher os dados
                 },
                 error: function (error) {
                     console.error('Erro ao carregar dados da tarefa:', error);
                 }
             });
-        }
+        });
 
-        // Submete o formulário de edição via AJAX
+        // Submeter o formulário de edição via AJAX
         $(document).on('submit', '#editTaskForm', function(event) {
             event.preventDefault();
             var formData = $(this).serialize();
@@ -92,15 +90,12 @@
                     if (data.success) {
                         console.log('Tarefa atualizada com sucesso.');
                         $('#editTaskModal').modal('hide');  // Esconde o modal após sucesso
-                        // Você pode adicionar aqui mais lógica de atualização da interface se necessário
                     } else {
                         console.error('Erro ao atualizar tarefa:', data.error);
-                        // Manipule erros de validação ou outros erros conforme necessário
                     }
                 },
                 error: function(error) {
                     console.error('Erro ao enviar requisição AJAX:', error);
-                    // Manipule erros de rede ou outros erros conforme necessário
                 }
             });
         });
