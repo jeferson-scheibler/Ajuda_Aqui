@@ -7,6 +7,7 @@ from django.contrib import messages
 from .forms import RegisterForm, TaskForm
 from .models import Task
 from django.template.loader import render_to_string
+from django.shortcuts import redirect
 
 def register(request):
     if request.method == 'POST':
@@ -117,14 +118,15 @@ def fetch_task_data(request):
 
 @login_required
 def delete_task(request, task_id):
-    task = get_object_or_404(Task, id=task_id, user=request.user)
-
     if request.method == 'POST':
+        task = get_object_or_404(Task, id=task_id, user=request.user)
+        task_name = task.task_name  # Para pegar o nome da tarefa antes de excluir
+
+        # Excluir a tarefa
         task.delete()
-        messages.success(request, 'Tarefa excluída com sucesso!')
+
+        # Redirecionar de volta para a página de lista de tarefas
         return redirect('task_list')
 
-    context = {
-        'task': task
-    }
-    return render(request, 'delete_task.html', context)
+    # Se o método da requisição não for POST, retorna um erro
+    return JsonResponse({'error': 'Invalid request method'}, status=400)

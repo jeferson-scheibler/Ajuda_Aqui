@@ -16,7 +16,9 @@
             </button>
             <form action="{% url 'delete_task' task.id %}" method="post" style="display: inline;">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Excluir Tarefa</button>
+                <button type="submit" class="btn btn-danger delete-task-btn" data-task-id="{{ task.id }}">
+                    Excluir Tarefa
+                </button>
             </form>
         </li>
         {% empty %}
@@ -98,6 +100,31 @@
                     console.error('Erro ao enviar requisição AJAX:', error);
                 }
             });
+        });
+
+        // Excluir tarefa via formulário POST
+        $('.delete-task-form').submit(function(event) {
+            event.preventDefault();
+            var confirmDelete = confirm("Tem certeza que deseja excluir esta tarefa?");
+            if (confirmDelete) {
+                var form = $(this);
+                $.ajax({
+                    url: form.attr('action'),
+                    method: 'POST',
+                    data: form.serialize(),
+                    success: function(data) {
+                        if (data.success) {
+                            alert(data.message);  // Exibe mensagem de sucesso
+                            window.location.reload();  // Recarrega a página para atualizar a lista de tarefas
+                        } else {
+                            console.error('Erro ao excluir tarefa:', data.error);
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Erro ao enviar requisição AJAX:', error);
+                    }
+                });
+            }
         });
     });
 </script>
