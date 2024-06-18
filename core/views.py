@@ -27,16 +27,29 @@ def register(request):
         form = RegisterForm()
     return render(request, 'core/register.html', {'form': form})
 
+# views.py
+
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
+        remember_me = request.POST.get('remember_me')  # Captura o valor do checkbox "remember me"
+        
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+            
+            if remember_me:
+                # Define a duração do cookie de sessão
+                request.session.set_expiry(1209600)  # 2 semanas
+            else:
+                request.session.set_expiry(0)  # Expira ao fechar o navegador
+            
             return redirect('task_list')
     else:
         form = AuthenticationForm()
+    
     return render(request, 'core/login.html', {'form': form})
+
 
 def logout_view(request):
     logout(request)

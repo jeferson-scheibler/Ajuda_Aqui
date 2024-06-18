@@ -3,12 +3,19 @@
 {% block title %}Login - AjudaAqui{% endblock %}
 
 {% block content %}
+
+{% load static %}
+
 <section class="max-w-lg mx-auto mt-8">
     <h2 class="text-3xl font-bold mb-4">Login</h2>
-    <form method="post" class="space-y-4">
+    <form method="post" action="{% url 'login' %}" class="space-y-4">
         {% csrf_token %}
         {{ form.as_p }}
         <div>
+            <p>
+                <label for="remember_me">Lembrar-me:</label>
+                <input type="checkbox" id="remember_me" name="remember_me">
+            </p>
             <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Login</button>
         </div>
     </form>

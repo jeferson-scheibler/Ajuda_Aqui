@@ -108,6 +108,29 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # Backend padrão do Django
+    # Outros backends de autenticação, se necessário
+]
+
+# Define que os cookies de sessão só podem ser transmitidos via HTTPS
+SESSION_COOKIE_SECURE = True
+
+# Define que os cookies de CSRF só podem ser transmitidos via HTTPS
+CSRF_COOKIE_SECURE = True
+
+# Define o tempo de expiração da sessão em segundos (por exemplo, 30 minutos)
+SESSION_COOKIE_AGE = 30 * 60
+
+# Define a expiração da sessão ao fechar o navegador
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Habilita sessões persistentes
+SESSION_SAVE_EVERY_REQUEST = True
+
+# Verifica se SESSION_ENGINE está configurado corretamente
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Padrão, usa o banco de dados
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
