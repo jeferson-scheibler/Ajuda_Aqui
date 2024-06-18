@@ -9,6 +9,10 @@ from .models import Task
 from django.template.loader import render_to_string
 from django.shortcuts import redirect
 
+
+def index(request):
+    return render(request, 'core/index.html')
+
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)

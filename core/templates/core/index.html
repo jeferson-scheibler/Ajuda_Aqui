@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Bem-vindo - AjudaAqui{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="min-h-screen flex flex-col items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 p-10 bg-white rounded-xl shadow-md">
+        <div class="text-center">
+            <h1 class="text-4xl font-bold text-blue-500 mb-4">Bem-vindo à AjudaAqui</h1>
+            <p class="text-gray-600 mb-8">AjudaAqui é uma comunidade online que conecta membros locais para resolver problemas, realizar tarefas do dia a dia e promover o voluntariado, a solidariedade e a colaboração.</p>
+        </div>
+        <div class="flex justify-center space-x-4">
+            <a href="{% url 'login' %}" class="inline-block px-6 py-2 text-lg font-medium text-white bg-blue-500 rounded-md shadow hover:bg-blue-600">Login</a>
+            <a href="{% url 'register' %}" class="inline-block px-6 py-2 text-lg font-medium text-blue-500 bg-white border border-blue-500 rounded-md shadow hover:bg-gray-100">Registrar</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
