@@ -1,11 +1,21 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
 {% block title %}Bem-vindo - AjudaAqui{% endblock %}
 
+{% block extra_css %}
+<style>
+    body {
+        background-image: url('{% static "images/ajuda_aqui_fundo.png" %}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-
-
-<div class="min-h-screen flex flex-col items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8 p-10 bg-white rounded-xl shadow-md">
         <div class="text-center">
             <h1 class="text-4xl font-bold text-blue-500 mb-4">Bem-vindo à AjudaAqui</h1>
@@ -16,6 +26,19 @@
             <a href="{% url 'register' %}" class="inline-block px-6 py-2 text-lg font-medium text-blue-500 bg-white border border-blue-500 rounded-md shadow hover:bg-gray-100">Registrar</a>
         </div>
     </div>
-</div>
 
+    <div class="mt-8">
+        <h2 class="text-2xl font-bold mb-4">Lista de Tarefas</h2>
+        <div class="grid gap-4">
+            {% for task in tasks %}
+            <div class="p-6 bg-white rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold text-blue-500 mb-2">{{ task.task_name }}</h3>
+                <p class="text-gray-600">{{ task.task_description }}</p>
+            </div>
+            {% empty %}
+            <p class="text-gray-600 py-4">Nenhuma tarefa encontrada.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

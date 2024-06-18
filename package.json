@@ -1,0 +1,15 @@
+{
+  "name": "ajudaaqui",
+  "version": "1.0.0",
+  "description": "AjudaAqui é uma comunidade online que conecta membros da comunidade para resolver problemas locais, realizar tarefas do dia a dia e promover o voluntariado, solidariedade e colaboração. Com uma abordagem inovadora e centrada na comunidade, a AjudaAqui busca desburocratizar a resolução de problemas locais, incentivando os moradores a se ajudarem mutuamente e a contribuir para o bem-estar coletivo.",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.4"
+  }
+}

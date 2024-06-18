@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -6,31 +7,35 @@
     <title>{% block title %}AjudaAqui{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    {% block extra_css %}{% endblock %}
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    {% block extra_css %}
+    {% endblock %}
 </head>
 <body class="bg-gray-100">
-    <header class="bg-blue-500 py-4">
+    <header class="header-bg py-4">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-white text-2xl font-bold">
-                <a href="{% url 'index' %}" class="text-white text-2xl font-bold">AjudaAqui</a></h1>
+            <a href="{% url 'index' %}" class="flex items-center text-white font-bold text-lg">
+                <img src="{% static 'images/logo_ajuda.png' %}" alt="Logo AjudaAqui" class="h-20 mr-2">
+            </a>
             <nav>
-                <ul class="flex space-x-4 text-white">
-                    <li><a href="#" class="text-white text-2xl font-bold">Home</a></li>
-                    <li><a href="#" class="text-white text-2xl font-bold">Sobre</a></li>
+                <ul class="flex space-x-4 text-black text-2xl font-bold">
+                    <li><a href="#" class="header-link hover: underline-none text-white">Home</a></li>
+                    <li><a href="#" class="header-link hover: underline-none text-white">Sobre</a></li>
                 </ul>
             </nav>
         </div>
-    </header>
+    </header>    
     <main class="container mx-auto mt-4">
         {% block content %}
         {% endblock %}
     </main>
-    <footer class="bg-blue-500 py-4 mt-4 text-white text-center">
+    <footer class="bg-metal py-4 mt-4 text-white text-center">
         <p>&copy; {% now "Y" %} AjudaAqui</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/htmx.org/dist/htmx.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    {% block javascript %}{% endblock %}
+    {% block javascript %}
+    {% endblock %}
 </body>
 </html>

@@ -1,0 +1,16 @@
+body {
+    background-image: url('../static/images/ajuda_aqui_fundo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.header-bg {
+    background-color: rgba(228, 107, 27, 0.5); /* Cor preta com 50% de transparência */
+}
+
+.header-link {
+    color: black; /* Cor do texto dos links */
+    text-decoration: none; /* Remove sublinhado padrão */
+    transition: color 0.3s; /* Transição suave para a cor do texto */
+}
