@@ -1,0 +1,8 @@
+<!-- task_form.html -->
+<form id="editTaskForm" method="post" action="{% url 'update_task' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="task_id" value="{{ task_id }}">
+    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 mt-2">Salvar</button>
+</form>
+<span class="close">&times;</span>

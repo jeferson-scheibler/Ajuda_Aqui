@@ -1,0 +1,27 @@
+-- Inserir tarefas para o usuário com ID 1
+INSERT INTO core_task (user_id, task_name, task_description, created_at, updated_at, priority, address, completed, category, problem_photo, solution_photo)
+VALUES
+    (1, 'Limpeza de jardim', 'Limpar o jardim da casa principal', NOW(), NOW(), 1,  'Rua das Flores, 123', true, 'Limpeza', 'problems/imagem-1.jpg', 'solution/solucao-1.jpg'),
+    (1, 'Conserto de encanamento', 'Consertar vazamento na pia da cozinha', NOW(), NOW(), 3, 'Avenida Principal, 456', false, 'Conserto', 'problems/imagem-2.jpg', 'solution/solucao-2.jpg'),
+    (1, 'Pintura da sala', 'Pintar as paredes da sala de estar', NOW(), NOW(), 1, 'Praça Central, 789', false, 'Recreação', 'problems/imagem-3.jpg', 'solution/solucao-3.jpg'),
+    (1, 'Instalação de câmeras de segurança', 'Instalar câmeras na área externa', NOW(), NOW(), 1, 'Rua da Segurança, 321', true, 'Segurança', 'problems/imagem-4.jpg', 'solution/solucao-4.jpg'),
+    (1, 'Manutenção de portão', 'Reparar motor do portão automático', NOW(), NOW(), 2, 'Alameda dos Portões, 567', false, 'Conserto', 'problems/imagem-5.jpg', 'solution/solucao-5.jpg'),
+    (1, 'Limpeza de piscina', 'Limpar e tratar água da piscina', NOW(), NOW(), 2, 'Avenida da Piscina, 890', true, 'Limpeza', 'problems/imagem-6.jpg', 'solution/solucao-6.jpg'),
+    (1, 'Conserto de telhado', 'Reparar telhas quebradas no telhado', NOW(), NOW(), 1, 'Rua dos Telhados, 111', false, 'Conserto', 'problems/imagem-7.jpg', 'solution/solucao-7.jpg'),
+    (1, 'Reparo de cerca elétrica', 'Verificar e reparar defeitos na cerca elétrica', NOW(), NOW(), 3, 'Estrada das Cercas, 222', true, 'Segurança', 'problems/imagem-8.jpg', 'solution/solucao-8.jpg'),
+    (1, 'Instalação de luminárias', 'Instalar novas luminárias na sala de jantar', NOW(), NOW(), 1, 'Avenida das Luminárias, 333', false, 'Recreação', 'problems/imagem-9.jpg', 'solution/solucao-9.jpg'),
+    (1, 'Podar árvores do jardim', 'Realizar poda de árvores para manutenção', NOW(), NOW(), 1, 'Praça das Árvores, 444', true, 'Limpeza', 'problems/imagem-10.jpg', 'solution/solucao-10.jpg');
+
+-- Inserir tarefas para o usuário com ID 2
+INSERT INTO core_task (user_id, task_name, task_description, created_at, updated_at, priority, address, completed, category, problem_photo, solution_photo)
+VALUES
+    (2, 'Reparo de bicicleta', 'Consertar pneu furado da bicicleta', NOW(), NOW(), 1, 'Rua das Bicicletas, 123', true, 'Recreação', 'problems/imagem-11.jpg', 'solution/solucao-11.jpg'),
+    (2, 'Limpeza do quintal', 'Limpar folhas e detritos do quintal', NOW(), NOW(), 2, 'Avenida do Quintal, 456', false, 'Limpeza', 'problems/imagem-12.jpg', 'solution/solucao-12.jpg'),
+    (2, 'Construção de escada', 'Construir nova escada para acesso ao porão', NOW(), NOW(), 2, 'Praça das Escadas, 789', false, 'Conserto', 'problems/imagem-13.jpg', 'solution/solucao-13.jpg'),
+    (2, 'Instalação de prateleiras', 'Montar e instalar prateleiras na despensa', NOW(), NOW(), 1, 'Alameda das Prateleiras, 321', true, 'Recreação', 'problems/imagem-14.jpg', 'solution/solucao-14.jpg'),
+    (2, 'Pintura da fachada', 'Pintar a fachada frontal da casa', NOW(), NOW(), 1, 'Rua da Fachada, 567', false, 'Recreação', 'problems/imagem-15.jpg', 'solution/solucao-15.jpg'),
+    (2, 'Conserto de máquina de lavar', 'Reparar vazamento na máquina de lavar roupa', NOW(), NOW(), 2, 'Avenida das Máquinas, 890', true, 'Conserto', 'problems/imagem-16.jpg', 'solution/solucao-16.jpg'),
+    (2, 'Limpeza de caixa d''água', 'Limpar e desinfetar a caixa d''água', NOW(), NOW(), 2, 'Rua da Caixa D''Água, 111', false, 'Limpeza', 'problems/imagem-17.jpg', 'solution/solucao-17.jpg'),
+    (2, 'Troca de fechaduras', 'Trocar fechaduras danificadas das portas', NOW(), NOW(), 1, 'Estrada das Fechaduras, 222', true, 'Segurança', 'problems/imagem-18.jpg', 'solution/solucao-18.jpg'),
+    (2, 'Reparo de vazamento no telhado', 'Identificar e consertar vazamento no telhado', NOW(), NOW(), 1, 'Avenida dos Vazamentos, 333', false, 'Conserto', 'problems/imagem-19.jpg', 'solution/solucao-19.jpg'),
+    (2, 'Instalação de ventiladores de teto', 'Instalar ventiladores de teto nos quartos', NOW(), NOW(), 3, 'Praça dos Ventiladores, 444', true, 'Recreação', 'problems/imagem-20.jpg', 'solution/solucao-20.jpg');

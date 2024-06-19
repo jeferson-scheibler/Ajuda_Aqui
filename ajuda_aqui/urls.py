@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from core import views  # Importando views do diretório core
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('index/', views.index, name='index'),
@@ -31,3 +33,6 @@ urlpatterns = [
     path('fetch_task_data/', views.fetch_task_data, name='fetch_task_data'),
     path('task/<int:task_id>/delete/', views.delete_task, name='delete_task'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

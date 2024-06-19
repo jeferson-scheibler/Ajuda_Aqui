@@ -60,7 +60,7 @@ def login_view(request):
     
     return render(request, 'core/login.html', {'form': form})
 
-
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('login')
@@ -68,12 +68,11 @@ def logout_view(request):
 @login_required
 def create_task(request):
     if request.method == 'POST':
-        form = TaskForm(request.POST)
+        form = TaskForm(request.POST, request.FILES)
         if form.is_valid():
             task = form.save(commit=False)
             task.user = request.user  # Associar a tarefa ao usuário logado
             task.save()
-            messages.success(request, 'Tarefa criada com sucesso!')
             return redirect('task_list')
     else:
         form = TaskForm()
@@ -89,21 +88,15 @@ def task_list(request):
 def edit_task(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
     if request.method == 'POST':
-        form = TaskForm(request.POST, instance=task)
+        form = TaskForm(request.POST, request.FILES, instance=task)
         if form.is_valid():
             form.save()
-            return JsonResponse({'success': True})
+            return redirect('task_list')
         else:
             return JsonResponse({'error': form.errors}, status=400)
     else:
         form = TaskForm(instance=task)
-        print("Form fields:", form.fields)
-        print("Task data:", task.task_name, task.task_description, task.priority)
-    
-    context = {
-        'form': form,
-        'task': task,
-    }
+    return render(request, 'tasks/edit_task.html', {'form': form})
 
 @login_required
 def update_task(request):
@@ -111,7 +104,7 @@ def update_task(request):
         task_id = request.POST.get('task_id')
         if task_id:
             task = get_object_or_404(Task, id=task_id, user=request.user)
-            form = TaskForm(request.POST, instance=task)
+            form = TaskForm(request.POST, request.FILES, instance=task)
             if form.is_valid():
                 form.save()
                 return JsonResponse({'success': True})
@@ -131,9 +124,6 @@ def fetch_task_data(request):
     form_html = render_to_string('form_partial.html', {'form': form}, request=request)
     
     data = {
-        'task_name': task.task_name,
-        'task_description': task.task_description,
-        'priority': task.priority,
         'form': form_html
     }
 
@@ -155,5 +145,5 @@ def delete_task(request, task_id):
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 def index(request):
-    tasks = Task.objects.filter(user=request.user)
+    tasks = Task.objects.all() 
     return render(request, 'index.html', {'tasks': tasks})

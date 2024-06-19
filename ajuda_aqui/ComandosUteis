@@ -1,0 +1,10 @@
+git add .                               : Adicionar arquivos ao stage.
+git commit -m "Mensagem do commit"      : Confirmar as mudanças.
+git push                                : Enviar as mudanças para o repositório remoto.
+
+python -m venv env
+.\env\Scripts\activate
+
+deativate
+
+pip install psycopg2-binary

@@ -14,36 +14,45 @@
     .no-underline {
         text-decoration: none;
     }
+    .scrollable-container {
+        max-height: 500px; /* Altura máxima do container com barra de rolagem */
+        overflow-y: auto; /* Adiciona barra de rolagem vertical quando necessário */
+    }
+    .max-w-custom {
+        max-width: 1200px; /* Largura máxima personalizada em pixels */
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen flex flex-col items-center justify-center font-mono py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8 p-10 bg-white rounded-xl shadow-md">
         <div class="text-center">
             <h1 class="text-4xl font-bold text-yellow-300 mb-4">Bem-vindo à AjudaAqui</h1>
             <p class="text-gray-600 mb-8">AjudaAqui é uma comunidade online que conecta membros locais para resolver problemas, realizar tarefas do dia a dia e promover o voluntariado, a solidariedade e a colaboração.</p>
         </div>
-        <div class=" flex justify-center space-x-4">
-            <a href="{% url 'login' %}" class="inline-block px-6 py-2 text-lg font-medium text-white bg-yellow-300 rounded-md shadow hover:bg-yellow-600">Login</a>
-            <a href="{% url 'register' %}" class="inline-block px-6 py-2 text-lg font-medium text-yellow-400 bg-white border border-yellow-300 rounded-md shadow hover:bg-gray-100">Registrar</a>
+        <div class="flex justify-center space-x-4">
+            <a href="{% url 'login' %}" class="inline-block px-6 py-2 text-lg font-medium text-white bg-yellow-300 rounded-md shadow hover:bg-yellow-600 no-underline">Login</a>
+            <a href="{% url 'register' %}" class="inline-block px-6 py-2 text-lg font-medium text-yellow-400 bg-white border border-yellow-300 rounded-md shadow hover:bg-gray-100 no-underline">Registrar</a>
         </div>
     </div>
 
-    <div class="mt-8 max-w-4xl w-full">
-        <h2 class="text-3xl font-bold mb-6 text-center text-yellow-300">Lista de Tarefas</h2>
+    <div class="mt-8 max-w-custom w-full">
+        <h2 class="text-3xl font-bold mb-6 text-center text-yellow-300">Ações</h2>
         <div class="mb-4">
             <input id="search-bar" type="text" placeholder="Buscar tarefas..." class="w-full p-2 border border-gray-300 rounded-md">
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="tasks-container">
-            {% for task in tasks %}
-            <div class="task-item p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <h3 class="text-xl font-semibold text-yellow-500 mb-2">{{ task.task_name }}</h3>
-                <p class="task-desc text-gray-700">{{ task.task_description }}</p>
+        <div class="scrollable-container">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mr-5" id="tasks-container">
+                {% for task in tasks %}
+                <div class="task-item p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-xl font-semibold text-yellow-300 mb-2">{{ task.task_name }}</h3>
+                    <p class="task-desc text-gray-700">{{ task.task_description }}</p>
+                </div>
+                {% empty %}
+                <p class="text-gray-700 py-4 col-span-full text-center">Nenhuma tarefa encontrada.</p>
+                {% endfor %}
             </div>
-            {% empty %}
-            <p class="text-gray-700 py-4 col-span-full text-center">Nenhuma tarefa encontrada.</p>
-            {% endfor %}
         </div>
     </div>
 </div>
@@ -59,7 +68,7 @@ document.getElementById('search-bar').addEventListener('input', function() {
             let textValue = taskDesc.textContent || taskDesc.innerText;
             let nameValue = taskName.textContent || taskName.innerText;
             taskItems[i].style.display = (textValue.toLowerCase().indexOf(filter) > -1 || nameValue.toLowerCase().indexOf(filter) > -1) ? "" : "none";
-        }       
+        }
     }
 });
 </script>

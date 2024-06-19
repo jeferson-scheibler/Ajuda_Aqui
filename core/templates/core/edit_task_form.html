@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="max-w-lg mx-auto">
+    <h2 class="text-3xl font-bold mb-4">Editar Tarefa</h2>
+    <form id="editTaskForm" hx-post="{% url 'update_task' %}">
+        {% csrf_token %}
+        <input type="hidden" name="task_id" id="task_id_input" value="{{ task.id }}">
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </form>
+</section>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    document.addEventListener('htmx:load', function(event) {
+        $('#editTaskModal').modal('show'); // Exibe o modal ao carregar a página
+    });
+</script>
+{% endblock %}

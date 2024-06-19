@@ -26,6 +26,19 @@ class Task(models.Model):
         (3, 'Alta'),
     ]
     priority = models.IntegerField(choices=PRIORITY_CHOICES)
+    CATEGORIES = [
+        ('Limpeza', 'Limpeza'),
+        ('Conserto', 'Conserto'),
+        ('Recreação', 'Recreação'),
+        ('Segurança', 'Segurança'),
+        # Adicione outras categorias conforme necessário
+    ]
+    address = models.CharField(max_length=255)
+    category = models.CharField(max_length=50, choices=CATEGORIES)
+    completed = models.BooleanField(default=False)
+    problem_photo = models.ImageField(upload_to='problems/', blank=True, null=True)
+    solution_photo = models.ImageField(upload_to='solutions/', blank=True, null=True)
+
 
     def __str__(self):
         return self.task_name

@@ -7,37 +7,125 @@
     .no-underline {
         text-decoration: none;
     }
+    .task-list {
+        padding: 0;
+        list-style: none;
+    }
+    .task-item {
+        border-bottom: 1px solid #ddd;
+        padding: 15px 0;
+    }
+    .task-item:last-child {
+        border-bottom: none;
+    }
+    .task-actions button, .task-actions form {
+        margin-right: 5px;
+    }
+    .task-photo {
+        max-width: 100%;
+        height: auto;
+    }
+    .modal-content {
+        border-radius: 10px;
+    }
+    .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: none;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    .modal-header .close {
+        margin-top: -20px;
+    }
+    .modal-body {
+        padding: 20px;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<section class="max-w-lg mx-auto">
-    <h2 class="text-3xl font-bold mb-4">Lista de Tarefas</h2>
-    <ul class="divide-y divide-gray-300">
+<section class="max-w-lg mx-auto mt-5">
+    <h2 class="text-3xl font-bold mb-4 text-center">Lista de Tarefas</h2>
+    <ul class="task-list">
         {% for task in tasks %}
-        <li class="py-4">
+        <li class="task-item">
             <h3 class="text-xl font-semibold">{{ task.task_name }}</h3>
             <p class="text-gray-600">{{ task.task_description }}</p>
-            <!-- Botão para abrir modal de edição -->
-            <button type="button" class="btn btn-primary edit-task-btn"
-                    data-toggle="modal" data-target="#editTaskModal"
-                    data-task-id="{{ task.id }}">Editar
-            </button>
-            <form action="{% url 'delete_task' task.id %}" method="post" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger delete-task-btn" data-task-id="{{ task.id }}">
-                    Excluir Tarefa
+            <p class="text-gray-600">Endereço: {{ task.address }}</p>
+            <p class="text-gray-600">Concluída: {{ task.completed|yesno:"Sim,Não" }}</p>
+            <p class="text-gray-600">Categoria: {{ task.get_category_display }}</p>
+            <div class="task-actions mt-2">
+                {% if task.problem_photo %}
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#problemPhotoModal{{ task.id }}">
+                    Ver Foto do Problema
                 </button>
-            </form>
+                {% endif %}
+                {% if task.solution_photo %}
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#solutionPhotoModal{{ task.id }}">
+                    Ver Foto da Solução
+                </button>
+                {% endif %}
+                <button type="button" class="btn btn-primary edit-task-btn"
+                        data-toggle="modal" data-target="#editTaskModal"
+                        data-task-id="{{ task.id }}">
+                    <i class="fas fa-edit"></i> Editar
+                </button>
+                <form action="{% url 'delete_task' task.id %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger delete-task-btn" data-task-id="{{ task.id }}">
+                        <i class="fas fa-trash-alt"></i> Excluir Tarefa
+                    </button>
+                </form>
+            </div>
         </li>
+
+        <!-- Modal for Problem Photo -->
+        {% if task.problem_photo %}
+        <div class="modal fade" id="problemPhotoModal{{ task.id }}" tabindex="-1" aria-labelledby="problemPhotoModalLabel{{ task.id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="problemPhotoModalLabel{{ task.id }}">Foto do Problema</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="{{ task.problem_photo.url }}" alt="Foto do Problema" class="img-fluid task-photo">
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Modal for Solution Photo -->
+        {% if task.solution_photo %}
+        <div class="modal fade" id="solutionPhotoModal{{ task.id }}" tabindex="-1" aria-labelledby="solutionPhotoModalLabel{{ task.id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="solutionPhotoModalLabel{{ task.id }}">Foto da Solução</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="{{ task.solution_photo.url }}" alt="Foto da Solução" class="img-fluid task-photo">
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
         {% empty %}
-        <li class="py-4 text-gray-600">Nenhuma tarefa encontrada.</li>
+        <li class="py-4 text-gray-600 text-center">Nenhuma tarefa encontrada.</li>
         {% endfor %}
     </ul>
-    <a href="{% url 'create_task' %}"
-       class="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 mt-4 ">
-        Adicionar Nova Tarefa
-    </a>
+    <div class="text-center mt-4">
+        <a href="{% url 'create_task' %}" class="btn btn-warning text-white">
+            <i class="fas fa-plus"></i> Adicionar Nova Tarefa
+        </a>
+    </div>
 </section>
 
 <div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
@@ -67,7 +155,9 @@
 {% endblock %}
 
 {% block javascript %}
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
     $(document).ready(function() {
         $('.edit-task-btn').click(function() {
@@ -90,10 +180,12 @@
         // Submeter o formulário de edição via AJAX
         $(document).on('submit', '#editTaskForm', function(event) {
             event.preventDefault();
-            var formData = $(this).serialize();
+            var formData = new FormData(this);
             $.ajax({
                 url: $(this).attr('hx-post'),
                 method: 'POST',
+                processData: false,
+                contentType: false,
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
                 },
@@ -102,6 +194,7 @@
                     if (data.success) {
                         console.log('Tarefa atualizada com sucesso.');
                         $('#editTaskModal').modal('hide');  // Esconde o modal após sucesso
+                        window.location.reload();  // Recarrega a página para mostrar as mudanças
                     } else {
                         console.error('Erro ao atualizar tarefa:', data.error);
                     }
@@ -113,11 +206,11 @@
         });
 
         // Excluir tarefa via formulário POST
-        $('.delete-task-form').submit(function(event) {
+        $('.delete-task-btn').click(function(event) {
             event.preventDefault();
             var confirmDelete = confirm("Tem certeza que deseja excluir esta tarefa?");
             if (confirmDelete) {
-                var form = $(this);
+                var form = $(this).closest('form');
                 $.ajax({
                     url: form.attr('action'),
                     method: 'POST',
