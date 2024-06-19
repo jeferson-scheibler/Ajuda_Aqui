@@ -1,5 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'core/base.html' %}
+{% load static %}
 {% block title %}Lista de Tarefas - AjudaAqui{% endblock %}
+{% block extra_css %}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .no-underline {
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <section class="max-w-lg mx-auto">
@@ -26,7 +35,7 @@
         {% endfor %}
     </ul>
     <a href="{% url 'create_task' %}"
-       class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 mt-4 inline-block">
+       class="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 mt-4 ">
         Adicionar Nova Tarefa
     </a>
 </section>
@@ -58,6 +67,7 @@
 {% endblock %}
 
 {% block javascript %}
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function() {
         $('.edit-task-btn').click(function() {
