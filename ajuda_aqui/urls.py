@@ -19,7 +19,7 @@ from django.urls import path, include
 from core import views  # Importando views do diretório core
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('index/', views.index, name='index'),
     path('admin/', admin.site.urls),
     path('register/', views.register, name='register'),
     path('login/', views.login_view, name='login'),
@@ -31,4 +31,3 @@ urlpatterns = [
     path('fetch_task_data/', views.fetch_task_data, name='fetch_task_data'),
     path('task/<int:task_id>/delete/', views.delete_task, name='delete_task'),
 ]
-
