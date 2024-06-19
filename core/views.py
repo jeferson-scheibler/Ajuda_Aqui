@@ -148,10 +148,7 @@ def delete_task(request, task_id):
     # Se o método da requisição não for POST, retorna um erro
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
+@login_required
 def index(request):
-    tasks = Task.objects.all()  # Busca todas as tarefas no banco de dados
-    
-    context = {
-        'tasks': tasks
-    }
-    return render(request, 'index.html', context)
+    tasks = Task.objects.filter(user=request.user)
+    return render(request, 'index.html', {'tasks': tasks})

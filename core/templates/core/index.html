@@ -11,6 +11,9 @@
         background-position: center;
         background-repeat: no-repeat;
     }
+    .no-underline {
+        text-decoration: none;
+    }
 </style>
 {% endblock %}
 
@@ -27,18 +30,37 @@
         </div>
     </div>
 
-    <div class="mt-8">
-        <h2 class="text-2xl font-bold mb-4">Lista de Tarefas</h2>
-        <div class="grid gap-4">
+    <div class="mt-8 max-w-4xl w-full">
+        <h2 class="text-3xl font-bold mb-6 text-center text-blue-500">Lista de Tarefas</h2>
+        <div class="mb-4">
+            <input id="search-bar" type="text" placeholder="Buscar tarefas..." class="w-full p-2 border border-gray-300 rounded-md">
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="tasks-container">
             {% for task in tasks %}
-            <div class="p-6 bg-white rounded-lg shadow-md">
-                <h3 class="text-xl font-semibold text-blue-500 mb-2">{{ task.task_name }}</h3>
-                <p class="text-gray-600">{{ task.task_description }}</p>
+            <div class="task-item p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <h3 class="text-xl font-semibold text-blue-600 mb-2">{{ task.task_name }}</h3>
+                <p class="task-desc text-gray-700">{{ task.task_description }}</p>
             </div>
             {% empty %}
-            <p class="text-gray-600 py-4">Nenhuma tarefa encontrada.</p>
+            <p class="text-gray-700 py-4 col-span-full text-center">Nenhuma tarefa encontrada.</p>
             {% endfor %}
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('search-bar').addEventListener('input', function() {
+    let filter = this.value.toLowerCase();
+    let taskItems = document.getElementsByClassName('task-item');
+    for (let i = 0; i < taskItems.length; i++) {
+        let taskDesc = taskItems[i].getElementsByClassName('task-desc')[0];
+        let taskName = taskItems[i].getElementsByTagName('h3')[0];
+        if (taskDesc && taskName) {
+            let textValue = taskDesc.textContent || taskDesc.innerText;
+            let nameValue = taskName.textContent || taskName.innerText;
+            taskItems[i].style.display = (textValue.toLowerCase().indexOf(filter) > -1 || nameValue.toLowerCase().indexOf(filter) > -1) ? "" : "none";
+        }       
+    }
+});
+</script>
 {% endblock %}
