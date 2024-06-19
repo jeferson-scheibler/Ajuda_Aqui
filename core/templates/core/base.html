@@ -9,15 +9,14 @@
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     {% block extra_css %}
     {% endblock %}
-    
 </head>
 <body>
-    <header class="bg-yellow-300  py-4">
+    <header class="bg-yellow-300 py-4">
         <div class="container mx-auto flex justify-between items-center">
             <a href="{% url 'index' %}" class="flex items-center text-white font-bold text-lg">
                 <img src="{% static 'images/logo_ajuda.png' %}" alt="Logo AjudaAqui" class="h-20 mr-2">
             </a>
-            <nav >
+            <nav>
                 <ul class="flex space-x-4 text-black text-2xl font-bold">
                     <li><a href="#" class="header-link hover:underline-none text-white">Home</a></li>
                     <li><a href="#" class="header-link hover:underline-none text-white">Sobre</a></li>
@@ -34,7 +33,6 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/htmx.org/dist/htmx.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
     {% block javascript %}
     {% endblock %}
 </body>

@@ -50,9 +50,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middleware.CheckLoginCookiesMiddleware',
 ]
 
 ROOT_URLCONF = 'ajuda_aqui.urls'
+
+LOGIN_URL = '/login/'  # Rota para a página de login
+LOGIN_REDIRECT_URL = '/task_list/'  # Rota para redirecionar após o login
 
 TEMPLATES = [
     {

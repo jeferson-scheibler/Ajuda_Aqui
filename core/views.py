@@ -7,7 +7,7 @@ from django.contrib import messages
 from .forms import RegisterForm, TaskForm
 from .models import Task
 from django.template.loader import render_to_string
-from django.shortcuts import redirect
+
 
 
 def index(request):
@@ -31,9 +31,11 @@ def register(request):
         form = RegisterForm()
     return render(request, 'core/register.html', {'form': form})
 
-# views.py
-
 def login_view(request):
+    # Verificar se o usuário já está autenticado via cookies
+    if request.user.is_authenticated:
+        return redirect('task_list')
+
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         remember_me = request.POST.get('remember_me')  # Captura o valor do checkbox "remember me"
@@ -42,13 +44,17 @@ def login_view(request):
             user = form.get_user()
             login(request, user)
             
+            response = redirect('task_list')
+            response.set_cookie('username', user.username)
+            response.set_cookie('password', request.POST['password'])  # Salva a senha em cookie (não recomendado para produção)
+            
             if remember_me:
                 # Define a duração do cookie de sessão
                 request.session.set_expiry(1209600)  # 2 semanas
             else:
                 request.session.set_expiry(0)  # Expira ao fechar o navegador
             
-            return redirect('task_list')
+            return response
     else:
         form = AuthenticationForm()
     
