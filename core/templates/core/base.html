@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}AjudaAqui{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     {% block extra_css %}
     {% endblock %}
@@ -21,7 +21,7 @@
                     <li><a href="#" class="header-link hover:underline-none text-white">Home</a></li>
                     <li><a href="#" class="header-link hover:underline-none text-white">Sobre</a></li>
                     {% if user.is_authenticated %}
-                    <a href="{% url 'logout' %}" class="text-white font-bold">Logout</a>
+                    <li><a href="{% url 'logout' %}" class="text-white font-bold">Logout</a></li>
                     {% endif %}
                 </ul>
             </nav>

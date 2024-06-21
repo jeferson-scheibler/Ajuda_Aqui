@@ -9,7 +9,13 @@ from .models import Task
 from django.template.loader import render_to_string
 
 def index(request):
-    return render(request, 'core/index.html')
+    if request.user.is_authenticated:
+        # Filtrar as tarefas excluindo as do usuário autenticado
+        tasks = Task.objects.exclude(user=request.user, completed=False)
+    else:
+        # Se não houver usuário autenticado, exibir todas as tarefas
+        tasks = Task.objects.all()
+    return render(request, 'core/index.html', {'tasks': tasks})
 
 def register(request):
     if request.method == 'POST':
