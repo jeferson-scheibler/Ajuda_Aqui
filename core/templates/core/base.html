@@ -20,6 +20,9 @@
                 <ul class="flex space-x-4 text-black text-2xl font-bold">
                     <li><a href="#" class="header-link hover:underline-none text-white">Home</a></li>
                     <li><a href="#" class="header-link hover:underline-none text-white">Sobre</a></li>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="text-white font-bold">Logout</a>
+                    {% endif %}
                 </ul>
             </nav>
         </div>

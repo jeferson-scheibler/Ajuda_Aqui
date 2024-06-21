@@ -8,8 +8,6 @@ from .forms import RegisterForm, TaskForm
 from .models import Task
 from django.template.loader import render_to_string
 
-
-
 def index(request):
     return render(request, 'core/index.html')
 
@@ -32,7 +30,6 @@ def register(request):
     return render(request, 'core/register.html', {'form': form})
 
 def login_view(request):
-    # Verificar se o usuário já está autenticado via cookies
     if request.user.is_authenticated:
         return redirect('task_list')
 
@@ -46,13 +43,14 @@ def login_view(request):
             
             response = redirect('task_list')
             response.set_cookie('username', user.username)
-            response.set_cookie('password', request.POST['password'])  # Salva a senha em cookie (não recomendado para produção)
+            # Evitar salvar a senha em cookies - Não é seguro
+            # response.set_cookie('password', request.POST['password'])  # REMOVIDO
             
             if remember_me:
-                # Define a duração do cookie de sessão
-                request.session.set_expiry(1209600)  # 2 semanas
+               request.session.set_expiry(1209600)  # 2 semanas
             else:
-                request.session.set_expiry(0)  # Expira ao fechar o navegador
+               #request.session.set_expiry(settings.SESSION_COOKIE_AGE)
+               request.session.set_expiry(0)  # Expira ao fechar o navegador
             
             return response
     else:
@@ -114,7 +112,7 @@ def update_task(request):
             return JsonResponse({'error': 'ID da tarefa não fornecido'}, status=400)
     else:
         return JsonResponse({'error': 'Método não permitido'}, status=405)
-    
+
 @login_required
 def fetch_task_data(request):
     task_id = request.GET.get('task_id')
@@ -143,7 +141,3 @@ def delete_task(request, task_id):
 
     # Se o método da requisição não for POST, retorna um erro
     return JsonResponse({'error': 'Invalid request method'}, status=400)
-
-def index(request):
-    tasks = Task.objects.all() 
-    return render(request, 'index.html', {'tasks': tasks})
