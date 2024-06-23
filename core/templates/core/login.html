@@ -11,38 +11,53 @@
         background-position: center;
         background-repeat: no-repeat;
     }
-    .no-underline {
-        text-decoration: none;
-    }
 </style>
 {% endblock %}
 
 {% block content %}
-
-
 <section class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8 p-10 bg-white bg-opacity-90 rounded-xl shadow-lg backdrop-blur-lg">
-        <div class="text-center">
-            <img class="mx-auto h-20 w-auto" src="{% static 'images/logo_ajuda.png' %}" alt="AjudaAqui Logo">
-            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Faça login na sua conta</h2>
-            <p class="mt-2 text-center text-sm text-gray-600">
-                Ou <a href="{% url 'register' %}" class="font-medium text-yellow-600 hover:text-yellow-500">registre-se</a> se você não possui uma conta
-            </p>
-        </div>
-        <form method="post" action="{% url 'login' %}" class="mt-8 space-y-6">
+    <div class="max-w-md w-full space-y-8">
+        <form method="post" action="{% url 'login' %}" class="bg-white bg-opacity-90 shadow-2xl rounded-2xl overflow-hidden border-4 border-yellow-400">
             {% csrf_token %}
-            {{ form.as_p }}
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <input id="remember_me" name="remember_me" type="checkbox" class="h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300 rounded">
-                    <label for="remember_me" class="ml-2 block text-sm text-gray-900">Lembrar-me</label>
-                </div>
-                <div class="text-sm">
-                    <a href="#" class="font-medium text-yellow-600 hover:text-yellow-500">Esqueceu sua senha?</a>
+            <div class="px-8 py-10 md:px-10">
+                <h2 class="text-4xl font-extrabold text-center text-gray-800">Bem-vindo de Volta!</h2>
+                <p class="text-center text-gray-600 mt-3">Sentimos sua falta, faça login para continuar.</p>
+                <div class="mt-10">
+                    <div class="relative">
+                        <label class="block mb-3 text-sm font-medium text-gray-600" for="username">Nome de Usuário</label>
+                        <input
+                            placeholder="seu_nome_de_usuário"
+                            class="block w-full px-4 py-3 mt-2 text-gray-800 bg-white bg-opacity-90 border-2 rounded-lg border-gray-300 focus:border-yellow-500 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-yellow-400"
+                            name="username"
+                            id="username"
+                            type="text"
+                        />
+                    </div>
+                    <div class="mt-6">
+                        <label class="block mb-3 text-sm font-medium text-gray-600" for="password">Senha</label>
+                        <input
+                            placeholder="••••••••"
+                            class="block w-full px-4 py-3 mt-2 text-gray-800 bg-white bg-opacity-90 border-2 rounded-lg border-gray-300 focus:border-yellow-500 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-yellow-400"
+                            name="password"
+                            id="password"
+                            type="password"
+                        />
+                    </div>
+                    <div class="mt-10">
+                        <button
+                            class="w-full px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-lg hover:from-yellow-500 hover:to-yellow-600 focus:outline-none focus:ring-4 focus:ring-yellow-400"
+                            type="submit"
+                        >
+                            Vamos Lá
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div>
-                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Login</button>
+            <div class="px-8 py-4 bg-yellow-200">
+                <div class="text-sm text-yellow-900 text-center">
+                    Não tem uma conta?
+                    <a class="font-medium underline" href="{% url 'register' %}">Registre-se</a>
+                </div>
             </div>
         </form>
     </div>

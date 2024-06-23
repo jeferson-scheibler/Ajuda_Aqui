@@ -2,7 +2,7 @@
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser, Task
+from .models import CustomUser, Task, Feedback
 from django.utils.translation import gettext_lazy as _
 
 class RegisterForm(UserCreationForm):
@@ -60,3 +60,11 @@ class TaskForm(forms.ModelForm):
         if len(task_name) < 5:
             raise forms.ValidationError("O nome da tarefa deve ter pelo menos 5 caracteres.")
         return task_name
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'placeholder': 'Seu feedback...', 'class': 'bg-yellow-100 text-yellow-600 h-28 placeholder:text-yellow-600 placeholder-opacity-50 border border-yellow-400 col-span-6 resize-none outline-none rounded-lg p-2 duration-300 focus:border-yellow-600'}),
+        }

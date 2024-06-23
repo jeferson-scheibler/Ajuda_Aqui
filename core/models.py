@@ -43,3 +43,10 @@ class Task(models.Model):
     def __str__(self):
         return self.task_name
     
+class Feedback(models.Model):
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Feedback em {self.created_at}'
+    

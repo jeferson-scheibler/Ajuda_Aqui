@@ -16,8 +16,29 @@
         max-height: 500px; /* Altura máxima do container com barra de rolagem */
         overflow-y: auto; /* Adiciona barra de rolagem vertical quando necessário */
     }
-    .max-w-custom {
-        max-width: 1200px; /* Largura máxima personalizada em pixels */
+    .min-w-custom {
+        min-width: 1000px; /* Largura máxima personalizada em pixels */
+    }
+    .scrollable-container {
+        max-height: 500px; /* Altura máxima do container com barra de rolagem */
+        overflow-y: auto; /* Adiciona barra de rolagem vertical quando necessário */
+        scrollbar-width: thin; /* Largura fina do rolador */
+        scrollbar-color: rgba(253, 224, 71 , 0.9) transparent; /* Cor do rolador: amarelo com transparência */
+    }
+
+    /* Estilo para Webkit (Chrome, Safari, Edge) */
+    .scrollable-container::-webkit-scrollbar {
+        width: 8px; /* Largura do rolador */
+    }
+
+    .scrollable-container::-webkit-scrollbar-track {
+        background-color: transparent; /* Cor do fundo do rolador: transparente */
+    }
+
+    .scrollable-container::-webkit-scrollbar-thumb {
+        background-color: rgba(253, 224, 71 , 0.9); /* Cor do rolador */
+        border-radius: 10px; /* Raio das bordas do rolador */
+        border: 2px solid transparent; /* Borda do rolador */
     }
 </style>
 {% endblock %}
@@ -35,11 +56,12 @@
         </div>
     </div>
 
-    <div class="mt-8 max-w-custom w-full">
-        <h2 class="text-3xl font-bold mb-6 text-center text-yellow-300">Ações</h2>
-        <div class="mb-4">
-            <input id="search-bar" type="text" placeholder="Buscar tarefas..." class="w-full p-2 border border-gray-300 rounded-md">
-        </div>
+    <div class="mt-8 mb-4 min-w-custom">
+        <h2 class="text-3xl font-bold mb-6 text-center text-yellow-300">Ações para Ajudar</h2>
+        <input id="search-bar" type="text" placeholder="Buscar tarefas..." class="w-full p-2 border border-gray-300 rounded-md">
+    </div>
+
+    <div class="mt-8 w-full">
         <div class="scrollable-container">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mr-5" id="tasks-container">
                 {% for task in tasks %}

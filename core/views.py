@@ -5,8 +5,25 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import RegisterForm, TaskForm
-from .models import Task
-from django.template.loader import render_to_string
+from .models import Task, Feedback
+from .forms import FeedbackForm
+
+def feedback_view(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Feedback enviado com sucesso!')
+            return redirect('pagina_principal')  # Redirecione para a página principal após enviar o feedback
+        else:
+            messages.error(request, 'Erro ao enviar o feedback. Por favor, verifique os campos.')
+    else:
+        form = FeedbackForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'core/feedback.html', context)
 
 def index(request):
     if request.user.is_authenticated:
@@ -16,6 +33,9 @@ def index(request):
         # Se não houver usuário autenticado, exibir todas as tarefas
         tasks = Task.objects.all()
     return render(request, 'core/index.html', {'tasks': tasks})
+
+def about(request):
+    return render(request, 'core/about.html')
 
 def register(request):
     if request.method == 'POST':
