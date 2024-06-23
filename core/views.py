@@ -7,6 +7,7 @@ from django.contrib import messages
 from .forms import RegisterForm, TaskForm
 from .models import Task, Feedback
 from .forms import FeedbackForm
+from django.template.loader import render_to_string
 
 def feedback_view(request):
     if request.method == 'POST':
