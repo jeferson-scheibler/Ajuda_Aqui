@@ -8,22 +8,67 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     {% block extra_css %}
+    <style>
+        @media (min-width: 640px) {
+            .nav-menu {
+                display: flex;
+            }
+            .nav-menu li {
+                margin-left: 2rem;
+            }
+        }
+        @media (max-width: 639px) {
+            .nav-menu {
+                display: none;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+            .menu-toggle.active + .nav-menu {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 5rem;
+                right: 1rem;
+                background-color: #f9fafb;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                z-index: 10;
+            }
+            .menu-toggle.active + .nav-menu li {
+                margin-left: 0;
+                padding: 1rem;
+                border-bottom: 1px solid #cbd5e0;
+            }
+        }
+    </style>
     {% endblock %}
 </head>
 <body>
-    <header class="bg-yellow-300 font-mono py-4">
+    <header class="bg-yellow-300 font-mono py-4 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
             <a href="{% url 'index' %}" class="flex items-center text-white font-bold text-lg">
                 <img src="{% static 'images/logo_ajuda.png' %}" alt="Logo AjudaAqui" class="h-20 mr-2">
             </a>
             <nav>
-                <ul class="flex space-x-4 text-black text-2xl font-bold">
-                    <li><a href="{% url 'index' %}" class="header-link hover:underline-none text-white">Home</a></li>
-                    <li><a href="{% url 'about' %}" class="header-link hover:underline-none text-white">Sobre</a></li>
+                <ul class="flex space-x-6 text-2xl font-bold nav-menu">
+                    <li><a href="{% url 'index' %}" class="text-white hover:text-gray-200 transition duration-300">Home</a></li>
+                    <li><a href="{% url 'about' %}" class="text-white hover:text-gray-200 transition duration-300">Sobre</a></li>
                     {% if user.is_authenticated %}
-                    <li><a href="{% url 'logout' %}" class="text-white font-bold">Logout</a></li>
+                    <li>
+                        <a href="{% url 'logout' %}" class="flex items-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V4m0 16h.01M13 4h-.01" />
+                            </svg>
+                            Logout
+                        </a>
+                    </li>
                     {% endif %}
                 </ul>
+                <button class="menu-toggle ml-4 sm:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white hover:text-gray-200 transition duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
             </nav>
         </div>
     </header>    
@@ -36,6 +81,11 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/htmx.org/dist/htmx.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+    </script>
     {% block javascript %}
     {% endblock %}
 </body>
