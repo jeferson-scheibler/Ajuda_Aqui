@@ -56,6 +56,7 @@
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
         z-index: 999;
+        box-shadow: 2px 2px 15px #ffda07 inset;
     }
 
     .modal-content {
@@ -107,6 +108,9 @@
         border-radius: 8px;
         margin-bottom: 10px;
     }
+    .input:active {
+        box-shadow: 2px 2px 15px #ffda07 inset;
+    }
 </style>
 {% endblock %}
 
@@ -114,9 +118,9 @@
 <div class="min-h-screen flex flex-col items-center justify-center font-mono py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8 p-10 bg-white rounded-xl shadow-md">
         <div class="text-center">
-            <h1 class="text-4xl font-bold text-yellow-300 mb-4">Bem-vindo à AjudaAqui</h1>
-            <p class="text-gray-600 mb-8">AjudaAqui é uma comunidade online que conecta membros locais para resolver problemas, realizar tarefas do dia a dia e promover o voluntariado, a solidariedade e a colaboração.</p>
-        </div>
+            <h1 class="text-4xl font-bold text-yellow-300 mb-4 transition-all duration-500 transform hover:scale-105">Bem-vindo à AjudaAqui</h1>
+            <p class="text-gray-600 mb-8 transition-all duration-500 transform hover:scale-105">AjudaAqui é uma comunidade online que conecta membros locais para resolver problemas, realizar tarefas do dia a dia e promover o voluntariado, a solidariedade e a colaboração.</p>
+        </div>        
         <div class="flex justify-center space-x-4">
             <a href="{% url 'login' %}" class="inline-block px-6 py-2 text-lg font-medium text-white bg-yellow-300 rounded-md shadow hover:bg-yellow-600 no-underline">Login</a>
             <a href="{% url 'register' %}" class="inline-block px-6 py-2 text-lg font-medium text-yellow-400 bg-white border border-yellow-300 rounded-md shadow hover:bg-gray-100 no-underline">Registrar</a>
@@ -125,7 +129,7 @@
 
     <div class="mt-8 mb-4 min-w-custom">
         <h2 class="text-3xl font-bold mb-6 text-center text-yellow-300">Ações para Ajudar</h2>
-        <input id="search-bar" type="text" placeholder="Buscar tarefas..." class="w-full p-2 border border-gray-300 rounded-md">
+        <input id="search-bar" type="text" placeholder="Buscar ações..." class="w-full p-2 input border border-yellow-400 border-4 rounded-md">
     </div>
 
     <div class="mt-8 w-full">
@@ -141,7 +145,7 @@
                     {% endif %}
                 </div>
                 {% empty %}
-                <p class="text-gray-700 py-4 col-span-full text-center">Nenhuma tarefa encontrada.</p>
+                <p class="text-gray-700 py-4 col-span-full text-center">Nenhuma ação encontrada.</p>
                 {% endfor %}
             </div>
         </div>

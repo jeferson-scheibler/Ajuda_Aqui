@@ -16,16 +16,10 @@ def feedback_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Feedback enviado com sucesso!')
-            return redirect('pagina_principal')  # Redirecione para a página principal após enviar o feedback
-        else:
-            messages.error(request, 'Erro ao enviar o feedback. Por favor, verifique os campos.')
+            return redirect('index')
     else:
         form = FeedbackForm()
-
-    context = {
-        'form': form,
-    }
-    return render(request, 'core/feedback.html', context)
+    return render(request, 'core/feedback.html', {'form': form})
 
 def index(request):
     if request.user.is_authenticated:
