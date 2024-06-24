@@ -39,14 +39,14 @@ class TaskForm(forms.ModelForm):
             'solution_photo': _('Foto da Solução'),
         }
         widgets = {
-            'task_name': forms.TextInput(attrs={'id': 'id_task_name', 'class': 'form-control', 'placeholder': 'Nome da Tarefa'}),
-            'task_description': forms.Textarea(attrs={'id': 'id_task_description', 'class': 'form-control', 'rows': 3, 'placeholder': 'Descrição da Tarefa'}),
-            'priority': forms.Select(attrs={'id': 'id_priority', 'class': 'form-control'}),
-            'address': forms.TextInput(attrs={'id': 'id_address', 'class': 'form-control', 'placeholder': 'Endereço'}),
+            'task_name': forms.TextInput(attrs={'id': 'id_task_name', 'class': 'block w-full px-4 py-3 mt-2 text-gray-800 bg-white bg-opacity-90 border-2 rounded-lg border-gray-300 focus:border-yellow-500 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-yellow-400', 'placeholder': 'Nome da Tarefa'}),
+            'task_description': forms.Textarea(attrs={'id': 'id_task_description', 'class': 'block w-full px-4 py-3 mt-2 text-gray-800 bg-white bg-opacity-90 border-2 rounded-lg border-gray-300 focus:border-yellow-500 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-yellow-400', 'rows': 3, 'placeholder': 'Descrição da Tarefa'}),
+            'priority': forms.Select(attrs={'id': 'id_priority', 'class': 'block w-full px-4 py-3 mt-2 text-gray-800 bg-white bg-opacity-90 border-2 rounded-lg border-gray-300 focus:border-yellow-500 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-yellow-400'}),
+            'address': forms.TextInput(attrs={'id': 'id_address', 'class': 'block w-full px-4 py-3 mt-2 text-gray-800 bg-white bg-opacity-90 border-2 rounded-lg border-gray-300 focus:border-yellow-500 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-yellow-400', 'placeholder': 'Endereço'}),
             'completed': forms.CheckboxInput(attrs={'id': 'id_completed', 'class': 'form-check-input'}),
-            'category': forms.Select(attrs={'id': 'id_category', 'class': 'form-control'}),
-            'problem_photo': forms.ClearableFileInput(attrs={'id': 'id_problem_photo', 'class': 'form-control-file'}),
-            'solution_photo': forms.ClearableFileInput(attrs={'id': 'id_solution_photo', 'class': 'form-control-file'}),
+            'category': forms.Select(attrs={'id': 'id_category', 'class': 'block w-full px-4 py-3 mt-2 text-gray-800 bg-white bg-opacity-90 border-2 rounded-lg border-gray-300 focus:border-yellow-500 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-yellow-400'}),
+            'problem_photo': forms.ClearableFileInput(attrs={'id': 'id_problem_photo', 'class': 'flex w-full rounded-md border border-yellow-300 border-input bg-white text-sm text-gray-400 file:border-0 file:bg-yellow-400 file:text-white file:text-sm file:font-medium '}),
+            'solution_photo': forms.ClearableFileInput(attrs={'id': 'id_solution_photo', 'class': 'flex w-full rounded-md border border-yellow-300 border-input bg-white text-sm text-gray-400 file:border-0 file:bg-yellow-400 file:text-white file:text-sm file:font-medium'}),
         }
 
     def clean_priority(self):
@@ -68,3 +68,4 @@ class FeedbackForm(forms.ModelForm):
         widgets = {
             'content': forms.Textarea(attrs={'placeholder': 'Seu feedback...', 'class': 'bg-yellow-100 text-yellow-600 h-28 placeholder:text-yellow-600 placeholder-opacity-50 border border-yellow-400 col-span-6 resize-none outline-none rounded-lg p-2 duration-300 focus:border-yellow-600'}),
         }
+

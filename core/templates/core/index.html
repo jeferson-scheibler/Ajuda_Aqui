@@ -135,8 +135,10 @@
                 <div class="task-item p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer" data-id="{{ task.id }}">
                     <h3 class="text-xl font-semibold text-yellow-300 mb-2">{{ task.task_name }}</h3>
                     <p class="task-desc text-gray-700">{{ task.task_description }}</p>
-                    <p class="task-address text-gray-600">{{ task.task_address }}</p>
-                    <img src="{{ task.task_image.url }}" alt="Imagem do problema" class="task-image hidden">
+                    <p class="task-address text-gray-600 hidden">{{ task.address }}</p>
+                    {% if task.problem_photo %}
+                    <img src="{{ task.problem_photo.url }}" alt="Imagem do problema" class="task-image hidden">
+                    {% endif %}
                 </div>
                 {% empty %}
                 <p class="text-gray-700 py-4 col-span-full text-center">Nenhuma tarefa encontrada.</p>
@@ -147,6 +149,7 @@
 </div>
 
 <!-- Modal -->
+
 <div id="modal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -163,6 +166,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
 document.getElementById('search-bar').addEventListener('input', function() {
@@ -193,7 +197,7 @@ for (let i = 0; i < taskItems.length; i++) {
         let taskName = this.querySelector('h3').innerText;
         let taskDesc = this.querySelector('.task-desc').innerText;
         let taskAddress = this.querySelector('.task-address').innerText;
-        let taskImage = this.querySelector('.task-image').getAttribute('src');
+        let taskImage = this.querySelector('.task-image').getAttribute('src', '{% static "../media/problems/imagem-2.jpg" %}');
 
         document.getElementById('modal-task-name').innerText = taskName;
         document.getElementById('modal-task-description').innerText = taskDesc;

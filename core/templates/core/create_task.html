@@ -1,14 +1,51 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
-{% block title %}Criar Tarefa{% endblock %}
+{% block title %}Criar Tarefa - AjudaAqui{% endblock %}
+{% block extra_css %}
+<style>
+    body {
+        background-image: url('{% static "images/ajuda_aqui_fundo.png" %}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="max-w-lg mx-auto mt-8">
-    <h2 class="text-3xl font-bold mb-4">Criar Tarefa</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Criar</button>
-    </form>
-</div>
+<section class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <form method="post" enctype="multipart/form-data" class="bg-white bg-opacity-90 shadow-2xl rounded-2xl overflow-hidden border-4 border-yellow-400 transition-transform transform hover:scale-105">
+            {% csrf_token %}
+            <div class="px-8 py-10 md:px-10">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Criar Tarefa</h2>
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li class="{{ message.tags }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <div class="space-y-6">
+                    {% for field in form %}
+                        <div>
+                            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-600">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <p class="text-xs text-gray-500 mt-1">{{ field.help_text }}</p>
+                            {% endif %}
+                            {% if field.errors %}
+                                <p class="text-xs text-red-500 mt-1">{{ field.errors }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-10">
+                    <button type="submit" class="w-full py-3 px-4 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-lg text-white hover:from-yellow-500 hover:to-yellow-600 focus:outline-none focus:ring-4 focus:ring-yellow-400 transition-all duration-300">Criar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
 {% endblock %}
