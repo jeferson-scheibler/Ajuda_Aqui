@@ -34,7 +34,4 @@ urlpatterns = [
     path('update_task/', views.update_task, name='update_task'),
     path('fetch_task_data/', views.fetch_task_data, name='fetch_task_data'),
     path('task/<int:task_id>/delete/', views.delete_task, name='delete_task'),
-]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

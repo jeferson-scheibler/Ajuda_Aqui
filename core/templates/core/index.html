@@ -13,32 +13,99 @@
         text-decoration: none;
     }
     .scrollable-container {
-        max-height: 500px; /* Altura máxima do container com barra de rolagem */
-        overflow-y: auto; /* Adiciona barra de rolagem vertical quando necessário */
+        max-height: 500px;
+        overflow-y: auto;
     }
     .min-w-custom {
-        min-width: 1000px; /* Largura máxima personalizada em pixels */
+        min-width: 1000px;
     }
     .scrollable-container {
-        max-height: 500px; /* Altura máxima do container com barra de rolagem */
-        overflow-y: auto; /* Adiciona barra de rolagem vertical quando necessário */
-        scrollbar-width: thin; /* Largura fina do rolador */
-        scrollbar-color: rgba(253, 224, 71 , 0.9) transparent; /* Cor do rolador: amarelo com transparência */
+        max-height: 500px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(253, 224, 71 , 0.9) transparent;
     }
 
-    /* Estilo para Webkit (Chrome, Safari, Edge) */
     .scrollable-container::-webkit-scrollbar {
-        width: 8px; /* Largura do rolador */
+        width: 8px;
     }
 
     .scrollable-container::-webkit-scrollbar-track {
-        background-color: transparent; /* Cor do fundo do rolador: transparente */
+        background-color: transparent;
     }
 
     .scrollable-container::-webkit-scrollbar-thumb {
-        background-color: rgba(253, 224, 71 , 0.9); /* Cor do rolador */
-        border-radius: 10px; /* Raio das bordas do rolador */
-        border: 2px solid transparent; /* Borda do rolador */
+        background-color: rgba(253, 224, 71 , 0.9);
+        border-radius: 10px;
+        border: 2px solid transparent;
+    }
+
+    /* Modal styles */
+    .modal {
+        display: none;
+    }
+
+    .modal.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .modal-content {
+        background-color: white;
+        max-width: 80%;
+        max-height: 80%;
+        overflow-y: auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-header h2 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+        flex: 1;
+    }
+
+    .modal-close {
+        cursor: pointer;
+        font-size: 1.5rem;
+        color: #aaa;
+    }
+
+    .modal-close:hover {
+        color: #555;
+    }
+
+    .modal-body {
+        margin-bottom: 10px;
+    }
+
+    .modal-footer {
+        text-align: right;
+    }
+
+    .modal-image {
+        max-width: 100%;
+        border-radius: 8px;
+        margin-bottom: 10px;
     }
 </style>
 {% endblock %}
@@ -65,14 +132,34 @@
         <div class="scrollable-container">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mr-5" id="tasks-container">
                 {% for task in tasks %}
-                <div class="task-item p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="task-item p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer" data-id="{{ task.id }}">
                     <h3 class="text-xl font-semibold text-yellow-300 mb-2">{{ task.task_name }}</h3>
                     <p class="task-desc text-gray-700">{{ task.task_description }}</p>
+                    <p class="task-address text-gray-600">{{ task.task_address }}</p>
+                    <img src="{{ task.task_image.url }}" alt="Imagem do problema" class="task-image hidden">
                 </div>
                 {% empty %}
                 <p class="text-gray-700 py-4 col-span-full text-center">Nenhuma tarefa encontrada.</p>
                 {% endfor %}
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="text-2xl font-bold text-yellow-300 mb-2" id="modal-task-name"></h2>
+            <span class="modal-close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p class="text-gray-700" id="modal-task-description"></p>
+            <p class="text-gray-600" id="modal-task-address"></p>
+            <img src="{{ task.problem_photo.url }}" alt="Imagem do problema" class="modal-image">
+        </div>
+        <div class="modal-footer">
+            <!-- Add any additional footer content here if needed -->
         </div>
     </div>
 </div>
@@ -84,12 +171,50 @@ document.getElementById('search-bar').addEventListener('input', function() {
     for (let i = 0; i < taskItems.length; i++) {
         let taskDesc = taskItems[i].getElementsByClassName('task-desc')[0];
         let taskName = taskItems[i].getElementsByTagName('h3')[0];
-        if (taskDesc && taskName) {
-            let textValue = taskDesc.textContent || taskDesc.innerText;
+        let taskAddress = taskItems[i].getElementsByClassName('task-address')[0];
+        let taskImage = taskItems[i].getElementsByClassName('task-image')[0];
+        if (taskDesc && taskName && taskAddress && taskImage) {
+            let descValue = taskDesc.textContent || taskDesc.innerText;
             let nameValue = taskName.textContent || taskName.innerText;
-            taskItems[i].style.display = (textValue.toLowerCase().indexOf(filter) > -1 || nameValue.toLowerCase().indexOf(filter) > -1) ? "" : "none";
+            let addressValue = taskAddress.textContent || taskAddress.innerText;
+            let imageValue = taskImage.getAttribute('src');
+            taskItems[i].style.display = (descValue.toLowerCase().indexOf(filter) > -1 || nameValue.toLowerCase().indexOf(filter) > -1 || addressValue.toLowerCase().indexOf(filter) > -1) ? "" : "none";
         }
     }
+});
+
+// Modal functionality
+const modal = document.getElementById('modal');
+const modalClose = document.querySelector('.modal-close');
+const taskItems = document.getElementsByClassName('task-item');
+
+for (let i = 0; i < taskItems.length; i++) {
+    taskItems[i].addEventListener('click', function() {
+        let taskName = this.querySelector('h3').innerText;
+        let taskDesc = this.querySelector('.task-desc').innerText;
+        let taskAddress = this.querySelector('.task-address').innerText;
+        let taskImage = this.querySelector('.task-image').getAttribute('src');
+
+        document.getElementById('modal-task-name').innerText = taskName;
+        document.getElementById('modal-task-description').innerText = taskDesc;
+        document.getElementById('modal-task-address').innerText = taskAddress;
+
+        // Verifica se o caminho da imagem não está vazio antes de definir o src da modal-image
+        if (taskImage.trim() !== "") {
+            document.querySelector('.modal-image').setAttribute('src', taskImage);
+        } else {
+            // Defina uma imagem padrão ou uma mensagem alternativa se taskImage estiver vazio
+            document.querySelector('.modal-image').setAttribute('src', '{% static "images/default_image.jpg" %}');
+            // Ou oculte a tag <img> completamente
+            // document.querySelector('.modal-image').style.display = 'none';
+        }
+
+        modal.classList.add('active'); // Adicionar a classe para exibir o modal
+    });
+}
+
+modalClose.addEventListener('click', function() {
+    modal.classList.remove('active'); // Remover a classe para fechar o modal
 });
 </script>
 {% endblock %}
