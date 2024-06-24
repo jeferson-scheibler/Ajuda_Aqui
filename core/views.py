@@ -8,6 +8,7 @@ from .forms import RegisterForm, TaskForm
 from .models import Task, Feedback
 from .forms import FeedbackForm
 from django.template.loader import render_to_string
+from django.db.models import Q
 
 def feedback_view(request):
     if request.method == 'POST':
@@ -29,7 +30,7 @@ def feedback_view(request):
 def index(request):
     if request.user.is_authenticated:
         # Filtrar as tarefas excluindo as do usuário autenticado
-        tasks = Task.objects.exclude(user=request.user, completed=False)
+        tasks = Task.objects.exclude(Q(user=request.user) | Q(completed=True))
     else:
         # Se não houver usuário autenticado, exibir todas as tarefas
         tasks = Task.objects.all()
