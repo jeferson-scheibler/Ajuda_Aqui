@@ -51,8 +51,8 @@
             </a>
             <nav>
                 <ul class="flex space-x-6 text-2xl font-bold nav-menu">
-                    <li><a href="{% url 'index' %}" class="text-white hover:text-black transition duration-300">Home</a></li>
-                    <li><a href="{% url 'about' %}" class="text-white hover:text-black transition duration-300">Sobre</a></li>
+                    <li><a href="{% url 'index' %}" class="hover:bg-yellow-400 bg-yellow-300 text-black inline-block px-6 py-2 text-lg font-medium rounded-md shadow">Home</a></li>
+                    <li><a href="{% url 'about' %}" class="hover:bg-yellow-400 bg-yellow-300 text-black inline-block px-6 py-2 text-lg font-medium rounded-md shadow">Sobre</a></li>
                     {% if user.is_authenticated %}
                     <li>
                         <a href="{% url 'logout' %}" class="inline-flex items-center px-2.5 py-1 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-full shadow-sm transition duration-300 ease-in-out">
@@ -73,6 +73,13 @@
         </div>
     </header>    
     <main class="container mx-auto font-mono mt-4">
+        <div id="messages">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
         {% block content %}
         {% endblock %}
     </main>
