@@ -10,16 +10,20 @@ from .forms import FeedbackForm
 from django.template.loader import render_to_string
 from django.db.models import Q
 
+@login_required
 def feedback_view(request):
     if request.method == 'POST':
         form = FeedbackForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Feedback enviado com sucesso!')
+            messages.success(request, 'Obrigado pelo seu feedback!')
             return redirect('index')
+        else:
+            messages.error(request, 'Ocorreu um erro ao enviar seu feedback. Por favor, tente novamente.')
     else:
         form = FeedbackForm()
-    return render(request, 'core/feedback.html', {'form': form})
+    
+    return render(request, 'feedback.html', {'form': form})
 
 def index(request):
     if request.user.is_authenticated:

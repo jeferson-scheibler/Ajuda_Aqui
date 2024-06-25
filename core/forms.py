@@ -65,7 +65,15 @@ class FeedbackForm(forms.ModelForm):
     class Meta:
         model = Feedback
         fields = ['content']
+        labels = {
+            'content': _('Digite aqui:'),
+        }
         widgets = {
-            'content': forms.Textarea(attrs={'placeholder': 'Seu feedback...', 'class': 'bg-yellow-100 text-yellow-600 h-28 placeholder:text-yellow-600 placeholder-opacity-50 border border-yellow-400 col-span-6 resize-none outline-none rounded-lg p-2 duration-300 focus:border-yellow-600'}),
+            'content': forms.Textarea(
+                attrs={
+                    'placeholder': 'Valorizamos seu feedback! Conte-nos como podemos melhorar.',
+                    'class': 'w-full bg-gray-100 text-gray-600 h-28 placeholder-gray-600 placeholder-opacity-50 border border-gray-200 col-span-6 resize-none outline-none rounded-lg p-2 mt-2 duration-300 focus:border-yellow-300 focus:ring-2 focus:ring-yellow-300'
+                }
+            )
         }
 
