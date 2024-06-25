@@ -38,15 +38,15 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password1'])  # Ajuste para 'password1'
+            user.set_password(form.cleaned_data['password1'])
             user.save()
             login(request, user)
-            messages.success(request, 'Registro realizado com sucesso!')
+            messages.success(request, 'Registro realizado com sucesso!', extra_tags='success')
             return redirect('task_list')
         else:
             for field, errors in form.errors.items():
                 for error in errors:
-                    messages.error(request, f'{field}: {error}')  # Mensagens de erro de validação
+                    messages.error(request, f'{field}: {error}', extra_tags='error')
     else:
         form = RegisterForm()
     return render(request, 'core/register.html', {'form': form})
@@ -91,9 +91,12 @@ def create_task(request):
         form = TaskForm(request.POST, request.FILES)
         if form.is_valid():
             task = form.save(commit=False)
-            task.user = request.user  # Associar a tarefa ao usuário logado
+            task.user = request.user
             task.save()
+            messages.success(request, 'Tarefa criada com sucesso!', extra_tags='success')
             return redirect('task_list')
+        else:
+            messages.error(request, 'Erro ao criar a tarefa. Por favor, corrija os erros abaixo.', extra_tags='error')
     else:
         form = TaskForm()
     
